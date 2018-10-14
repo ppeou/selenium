@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ShadowDOMTest.class})
+@Suite.SuiteClasses({ShadowDOMTest.class, ViewTwoTest.class})
 @SpringBootTest
 public class SeleniumApplicationTests {
 

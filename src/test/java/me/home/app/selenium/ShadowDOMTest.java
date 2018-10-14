@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-// ApplicationContext will be loaded from the OrderServiceConfig class
 @ContextConfiguration(classes=WebDriverConfig.class, loader= AnnotationConfigContextLoader.class)
 public class ShadowDOMTest {
 
@@ -32,44 +31,31 @@ public class ShadowDOMTest {
 
         System.out.println("Retrieve my-app tag");
         WebElement myAppTag = driver.findElement(By.tagName("my-app"));
-        WebElement myAppShadowRoot = expandRootElement(myAppTag);
+        String path = "(shadow-root)>app-drawer-layout>app-header-layout>app-header>app-toolbar>div[main-title]";
+        WebElement headerElem = Util.getChildByPath(driver,myAppTag, path);
+        Assert.assertEquals("My App", headerElem.getText());
+        /*WebElement myAppShadowRoot = Util.expandRootElement(myAppTag, driver);
 
         System.out.println("Retrieve app-drawer-layout tag");
-        WebElement appDrawerLayoutTag = getChildByTagName("app-drawer-layout", myAppShadowRoot);
+        WebElement appDrawerLayoutTag = Util.getChildByTagName(myAppShadowRoot, driver, "app-drawer-layout");
 
         System.out.println("Retrieve app-header-layout tag");
-        WebElement appHeaderLayoutTag = getChildByTagName("app-header-layout", appDrawerLayoutTag);
+        WebElement appHeaderLayoutTag = Util.getChildByTagName(appDrawerLayoutTag, driver, "app-header-layout");
 
         System.out.println("Retrieve app-header tag");
-        WebElement appHeaderTag = getChildByTagName("app-header", appHeaderLayoutTag);
+        WebElement appHeaderTag = Util.getChildByTagName(appHeaderLayoutTag, driver, "app-header");
 
         System.out.println("Retrieve app-toolbar tag");
-        WebElement appToolbarTag = getChildByTagName("app-toolbar", appHeaderTag);
+        WebElement appToolbarTag = Util.getChildByTagName(appHeaderTag, driver,"app-toolbar");
 
-        String actualHeading =  getChildByTagName("div[main-title]", appToolbarTag).getText();
+        String actualHeading = Util.getChildByTagName(appToolbarTag, driver, "div[main-title]").getText();
         System.out.println(actualHeading);
 
         // Verify header title
-        Assert.assertEquals("My App", actualHeading);
+        Assert.assertEquals("My App", actualHeading);*/
         Assert.assertTrue(true);
     }
 
     //Returns webelement
-    public WebElement expandRootElement(WebElement element) {
-        WebElement ele = (WebElement) ((JavascriptExecutor) driver)
-                .executeScript("return arguments[0].shadowRoot",element);
-        return ele;
-    }
 
-    public WebElement getChildByTagName(String tagName, WebElement element) {
-        WebElement ele = (WebElement) ((JavascriptExecutor) driver)
-                .executeScript("return arguments[0].querySelector('"+ tagName+"')",element);
-        return ele;
-    }
-
-    /*@After
-    public void dispose() {
-        System.out.println("dispose()");
-        driver.quit();
-    }*/
 }
