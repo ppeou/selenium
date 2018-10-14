@@ -1,8 +1,14 @@
-package me.home.app.selenium;
+package me.home.Util;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public class Util {
     public static WebElement expandRootElement(WebElement element, WebDriver driver) {
@@ -32,5 +38,27 @@ public class Util {
             }
         }
         return elem;
+    }
+
+    public static String getCurrentUrl(WebDriver driver) {
+        return driver.getCurrentUrl();
+    }
+
+    public static List<WebElement> getChildrenByPath(WebDriver driver, WebElement root, String path) {
+        WebElement aElem = getChildByPath(driver,root, path);
+        List<WebElement> items = Collections.EMPTY_LIST;
+        if(aElem != null) {
+            items = aElem.findElements(By.xpath(".//*"));
+        }
+        return items;
+    }
+
+    public static void navigateToPage(WebDriver driver, WebElement root, String pageName) {
+        String path = "(shadow-root)>app-drawer-layout>#drawer>.drawer-list";
+        List<WebElement> aElems = getChildrenByPath(driver, root, path);
+        Optional<WebElement> foundAny = aElems.stream().filter(a -> a.getText().equals(pageName)).findFirst();
+        if(foundAny.isPresent()) {
+            foundAny.get().click();
+        }
     }
 }

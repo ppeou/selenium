@@ -1,5 +1,6 @@
 package me.home.app.selenium;
 
+import me.home.Util.Util;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,7 @@ public class ViewTwoTest {
         String path = "(shadow-root)>app-drawer-layout>#drawer>.drawer-list>a:nth-child(2)";
         String path2 = "(shadow-root)>app-drawer-layout>app-header-layout>iron-pages>my-view2>(shadow-root)>div.card>h1";
         WebElement viewTwoLink = Util.getChildByPath(driver, myAppTag, path);
+
         if(viewTwoLink != null) {
             viewTwoLink.click();
             try {
